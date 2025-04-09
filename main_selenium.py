@@ -33,30 +33,22 @@ def get_company_list(driver, start_url='https://www.ycombinator.com/companies'):
     wait = WebDriverWait(driver, 10)
     wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[href^="/companies/"]')))
     
-
     last_height = driver.execute_script("return document.body.scrollHeight")
-    
-    # -- TESTING --
-    scroll_count = 0
-    max_scrolls = 10
+    max_retries = 3
+    retries = 0
 
-    while scroll_count < max_scrolls:
+    while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(2)
         new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            break
-        last_height = new_height
-        scroll_count += 1
 
-    # -- ACTUAL IMPLEMENTATION --
-    # while True:
-    #     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    #     time.sleep(2)
-    #     new_height = driver.execute_script("return document.body.scrollHeight")
-    #     if new_height == last_height: # Reached end of scroll
-    #         break
-    #     last_height = new_height
+        if new_height == last_height:
+            retries += 1
+            if retries >= max_retries:
+                break
+        else:
+            retries = 0
+            last_height = new_height
     
     # Parse w/ BeautifulSoup
     soup = BeautifulSoup(driver.page_source, 'html.parser')
@@ -160,10 +152,6 @@ def main():
         driver = setup_driver()
 
         companies = get_company_list(driver)
-        companies = companies[:10]
-
-        for c in companies:
-            logging.info(c)
 
         for i, company in enumerate(companies):
             logging.info(f"Processing company {i+1}/{len(companies)}: {company['name']}")

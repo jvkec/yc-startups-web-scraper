@@ -1,6 +1,8 @@
 # YC Startups Web Scraper
 
-This script scrapes detailed information about startups listed on Y Combinator’s website.
+This script scrapes detailed information about startups listed on Y Combinator’s website. It caps at 1000 of the most popular companies.
+
+NOTE: You can actually get most of the information on the page of companies using the public Algolia API. The 1000 company cap is still in place, however.
 
 ## Features
 
@@ -29,7 +31,11 @@ This script scrapes detailed information about startups listed on Y Combinator�
 
 Run the script:
 ```bash
-python main.py
+python main_selenioum.py
+```
+or
+```bash
+python main_algolia_api.py
 ```
 
 A file called `yc_companies.csv` will be created with the results.
