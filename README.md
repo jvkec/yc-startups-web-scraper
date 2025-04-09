@@ -47,8 +47,8 @@ CSV columns:
 - `description`
 - `website`
 - `batch`
-- `yc_url`
-- `tags` (separated by `|`)
+- `tags` (in PostgreSQL array format: `{tag1,tag2,tag3}`)
+- 'yc_url'
 
 ## License
 

@@ -107,7 +107,7 @@ def get_company_details(driver, company_url):
         # Tags
         tag_elements = soup.select('a[href^="/companies/industry/"], a[href^="/companies/location/"]')
         tags = [tag.get_text(strip=True) for tag in tag_elements]
-        tags_string = " | ".join(tags)
+        tags_string = "{" + ",".join(tags) + "}" if tags else "{}"
 
         return {
             'description': description,
